@@ -1,3 +1,34 @@
+Skip to content
+Navigation Menu
+mauryavyom
+/
+EMPLOYEE_MANAGMENT
+
+Type / to search
+
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Commit
+Add files via upload
+ main
+@mauryavyom
+mauryavyom committed in 3 hours 
+0 parents
+commit 59c0eb6
+ 
+Showing 2 changed files with 196 additions and 0 deletions.
+Filter changed files
+ 195 changes: 195 additions & 0 deletions195  
+employee_managment.c
+Original file line number	Diff line number	Diff line change
+@@ -0,0 +1,195 @@
 #include<stdio.h>
 #include<string.h>
 
@@ -183,7 +214,7 @@ int main(){
                     (*count)--;
             }
         }
-        
+
         printf(RED"\nEMPLOYEE DATA DELEATED .\n");
         if(!found){
             printf("\nEmployee id %d not found .",id);
@@ -193,3 +224,24 @@ int main(){
             printf("\nPASSWORD INCORRECT PLEAS TRY AGAIN .\n");
         }
     }
+ 1 change: 1 addition & 0 deletions1  
+pass.txt
+0 comments on commit 59c0eb6
+@mauryavyom
+Comment
+ 
+Leave a comment
+ basic !!!!
+You’re receiving notifications because you’re watching this repository.
+Footer
+© 2024 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+Add files via upload · mauryavyom/EMPLOYEE_MANAGMENT@59c0eb6
