@@ -1,36 +1,7 @@
-Skip to content
-Navigation Menu
-mauryavyom
-/
-EMPLOYEE_MANAGMENT
-
-Type / to search
-
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-Commit
-Add files via upload
- main
-@mauryavyom
-mauryavyom committed in 3 hours 
-0 parents
-commit 59c0eb6
- 
-Showing 2 changed files with 196 additions and 0 deletions.
-Filter changed files
- 195 changes: 195 additions & 0 deletions195  
-employee_managment.c
-Original file line number	Diff line number	Diff line change
-@@ -0,0 +1,195 @@
 #include<stdio.h>
 #include<string.h>
+#include<unistd.h>
+#include<stdbool.h>
 
 #define MAX_EMPLOYEE 100
 #define RESET   "\033[om"
@@ -39,7 +10,7 @@ Original file line number	Diff line number	Diff line change
 #define YELLOW "\033[33m"
 #define BLUE   "\033[34m"
 #define WHITE  "\033[37m"
-
+#define CYAN   "\033[0;36m"
 //define a structure for employees
 typedef struct{
     int id;
@@ -51,24 +22,9 @@ void addemployee(Employee employees[],int *count);
 void displayemployee(Employee employees[],int count);
 void updateemployee(Employee employees[],int count);
 void deleteemployee(Employee employees[],int *count);
+bool secur(int epass);
+void bar(int percentage);
 
-//function of loading bar 
-void bar(int percentage){
-    int bar_width = 30;
-    printf("Loading");
-    int pos = bar_width*percentage /100;
-    for(int i =0 ; i<bar_width;++i){
-        if(i<pos){
-            printf(".");
-        }
-        else if (i==pos){
-            printf("!");
-        }
-        else printf(" ");
-    }
-    printf("|%d%%\r",percentage);
-    fflush(stdout);
-}
 int main(){
     Employee employees[MAX_EMPLOYEE];
     int count=0,choice;
@@ -135,7 +91,7 @@ int main(){
             usleep(100000);
         }
         printf("\n");
-        printf("\n Employee added succesfully .\n");
+        printf(CYAN"\n Employee added succesfully .\n");
     }
 //function to display employee .
     void displayemployee(Employee employees[],int count){
@@ -143,24 +99,37 @@ int main(){
             printf("No detail to display . ");
             return ;
         }
-        printf("\nList of employees .\n");
-        printf("\n i'd \t\t Name \t\t Salary \n");
+        printf("\n");
+    printf("\t\t\t############################\n");
+    printf("\t\t\t#                          #\n");
+    printf("\t\t\t#     List of employees    #\n");
+    printf("\t\t\t#                          #\n");
+    printf("\t\t\t############################\n");
+    printf("\n");
+        printf("\n i'd |\t\t Name |\t\t \tSalary |\n");
         for(int i=0 ; i < count ; i++){
-            printf("\n %d\t\t %s \t\t %2f ",employees[i].id,employees[i].name,employees[i].salary);
+            printf("\n %d|\t\t %s |\t\t %f |\n",employees[i].id,employees[i].name,employees[i].salary);
+            printf("__________________________________________________");
+            printf("\n");
             printf("\n");
         }
     }
 //function to update employee 
     void updateemployee(Employee employees[],int count){
-        int found =0 ,id,pass;
+        int found =0 ,id,epass;
         if(count == 0){
             printf("No data to be updated .");
             return ;
         }
-        printf(GREEN"\n ENTER THE PASSWORD TO UPDATE THE DATA : ");
-        scanf("%d",&pass);
+        
+        printf(GREEN"\nENTER THE PASSWORD TO UPDATE THE DATA : ");
+        scanf("%d",&epass);
 
-        if(pass == 167){
+        if(!secur(epass)){
+            printf(RED"ACCESS DENIED WRONG PASSWORD . \n");
+            return;
+        }
+        printf("ACCESS GRANTED CORRECT PASSWORD .\n");
 
         printf(WHITE"\nEnter id to be updated : ");
         scanf("%d",&id);
@@ -178,29 +147,30 @@ int main(){
             usleep(100000);
         }
         printf("\n");
-                printf("\nDATA UPDATED SUCCESFULLEY !!\n");
+                printf(CYAN"\nDATA UPDATED SUCCESFULLEY !!\n");
             }
         }
         if(!found ){
-            printf("Employee with this id %d not found .\n",id);
+            printf(RED"Employee with this id %d not found .\n",id);
         }
-    }
-    else{
-        printf("INCORRECT PASSWORD PLEAS TRY AGAIN !! .");
-        return;
-    }
         }
 //function to deleate employee
+
     void deleteemployee(Employee employees[],int *count){
-        int found = 0 , id,pass;
+        int found = 0 , id,epass;
         if(count ==0 ){
-            printf("no data present to delete");
+            printf(RED"no data present to delete");
             return ;
         }
-        printf(GREEN"\nENTER THE PASSWORD TO DELEATE DATA : ");
-        scanf("%d",&pass);
-        if(pass == 167){ 
+        //calling secure function in deleteemployee function .
+        printf(GREEN"\nENTER THE PASSWORD TO ACCES THE DATA : ");
+        scanf("%d",&epass);
 
+        if(!secur(epass)){
+            printf(RED"ACCESS DENIED WRONG PASSWORD . \n");
+            return;
+        }
+        printf("ACCESS GRANTED CORRECT PASSWORD .");
         printf(WHITE"Enter the id to be deleated : ");
         scanf("%d",&id);
 // this for loop will first iterate in all structures and find the entered id .
@@ -214,34 +184,42 @@ int main(){
                     (*count)--;
             }
         }
-
+        
         printf(RED"\nEMPLOYEE DATA DELEATED .\n");
         if(!found){
             printf("\nEmployee id %d not found .",id);
         }
-        }
-        else{
-            printf("\nPASSWORD INCORRECT PLEAS TRY AGAIN .\n");
-        }
     }
- 1 change: 1 addition & 0 deletions1  
-pass.txt
-0 comments on commit 59c0eb6
-@mauryavyom
-Comment
- 
-Leave a comment
- basic !!!!
-You’re receiving notifications because you’re watching this repository.
-Footer
-© 2024 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact
-Manage cookies
-Do not share my personal information
-Add files via upload · mauryavyom/EMPLOYEE_MANAGMENT@59c0eb6
+
+    bool secur(int epass){
+    int spass;
+    FILE *pass;
+    pass = fopen("pass.txt","r");
+    if(pass == NULL){
+    perror("\nFAILED TO OPEN FILE .\n");
+    return ;
+    }
+    fscanf(pass,"%d",&spass);
+    fclose(pass);
+    
+ return epass == spass ;
+
+    }
+
+//function of loading bar 
+void bar(int percentage){
+    int bar_width = 30;
+    printf("Loading");
+    int pos = bar_width*percentage /100;
+    for(int i =0 ; i<bar_width;++i){
+        if(i<pos){
+            printf(".");
+        }
+        else if (i==pos){
+            printf("!");
+        }
+        else printf(" ");
+    }
+    printf("|%d%%\r",percentage);
+    fflush(stdout);
+}
